@@ -6,7 +6,71 @@
     <title>Leona Koldehoff</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+   
 <body>
-    <p>Archivarin</p>
+  <div class="container">
+    <div class="profile-card">
+      <div id="profile" class="loading">Loading profile...</div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch and display profile data
+    fetch('/content/profile.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Profile data not found');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const profileDiv = document.getElementById('profile');
+        
+        // Convert markdown-style formatting to HTML
+        const bioHtml = markdownToHtml(data.bio || '');
+        
+        // Build the profile HTML
+        profileDiv.innerHTML = `
+          <h1>${escapeHtml(data.name || 'Profile')}</h1>
+          <div class="bio">${bioHtml}</div>
+          ${data.resume ? `<a href="${escapeHtml(data.resume)}" class="resume-link" download>Download Resume (PDF)</a>` : ''}
+        `;
+      })
+      .catch(error => {
+        document.getElementById('profile').innerHTML = `
+          <div class="error">
+            <strong>Error loading profile:</strong> ${error.message}
+          </div>
+        `;
+      });
+
+    // Simple markdown converter
+    function markdownToHtml(markdown) {
+      return markdown
+        // Paragraphs (double line breaks)
+        .split('\n\n')
+        .map(para => {
+          para = para.trim();
+          if (!para) return '';
+          
+          // Bold
+          para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+          // Italic
+          para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
+          // Line breaks
+          para = para.replace(/\n/g, '<br>');
+          
+          return `<p>${para}</p>`;
+        })
+        .join('');
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
 </body>
 </html>
