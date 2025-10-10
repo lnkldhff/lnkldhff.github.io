@@ -1,0 +1,19 @@
+backend:
+  name: github
+  repo: lndkldhff/lndkldhff.github.io  # Change to your GitHub repo
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "profile"
+    label: "Profile"
+    files:
+      - name: "bio"
+        label: "Bio & Resume"
+        file: "content/profile.json"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Bio", name: "bio", widget: "markdown" }
+          - { label: "Resume PDF", name: "resume", widget: "file", required: false }
