@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: lndkldhff/lndkldhff.github.io  # Change to your GitHub repo
+  repo: lnkldhff/lnkldhff.github.io  # Change to your GitHub repo
   branch: main
 
 media_folder: "uploads"
