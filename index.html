@@ -43,25 +43,27 @@
       });
 
     // Simple markdown converter
-    function markdownToHtml(markdown) {
-      return markdown
-        // Paragraphs (double line breaks)
-        .split('\n\n')
-        .map(para => {
-          para = para.trim();
-          if (!para) return '';
-          
-          // Bold
-          para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-          // Italic
-          para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
-          // Line breaks
-          para = para.replace(/\n/g, '<br>');
-          
-          return `<p>${para}</p>`;
-        })
-        .join('');
-    }
+  function markdownToHtml(markdown) {
+  return markdown
+    .split('\n\n')
+    .map(para => {
+      para = para.trim();
+      if (!para) return '';
+      
+      // Bold
+      para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      // Italic - asterisks
+      para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Italic - underscores (ADD THIS LINE)
+      para = para.replace(/_(.+?)_/g, '<em>$1</em>');
+      // Line breaks
+      para = para.replace(/\n/g, '<br>');
+      
+      return `<p>${para}</p>`;
+    })
+    .join('');
+}
+
 
     // Escape HTML to prevent XSS
     function escapeHtml(text) {
